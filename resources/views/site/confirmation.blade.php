@@ -1,7 +1,7 @@
 <x-layouts.site>
-    <div x-data="cartPage()">
+    <div x-data="confirmationPage()">
         <header class="flex items-center justify-between p-4 text-white bg-gray-800 shadow-md">
-            <button onclick="window.location.href = {{ route('site.home') }}"
+            <a href="{{ route('site.cart') }}"
                 class="flex items-center space-x-2 text-lg text-white hover:text-gray-300">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor">
@@ -10,7 +10,7 @@
                     </path>
                 </svg>
                 <span>Voltar</span>
-            </button>
+            </a>
             <h1 class="text-lg font-bold">CArrinho</h1>
             <button class="text-sm text-red-500" @click="clear()">LIMPAR</button>
         </header>
@@ -50,7 +50,7 @@
                 return {
                     userName: localStorage.getItem('userName') || '',
                     goBackToMenu() {
-                        window.location.href = '/'; // Substitua pelo caminho da tela inicial
+                        window.location.href = '/home'; // Substitua pelo caminho da tela inicial
                     }
                 };
             }

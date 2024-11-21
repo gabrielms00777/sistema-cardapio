@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\MenuItem;
+use App\Models\Order;
+use App\Models\OrderItem;
+use Illuminate\Http\Request;
 
 class SiteController extends Controller
 {
@@ -146,6 +149,37 @@ class SiteController extends Controller
     public function cart()
     {
         return view('site.cart');
+    }
+
+    public function order(Request $request)
+    {
+        $data = $request->validate([
+            'table_id' => 'required',
+            'name' => 'required',
+            'items' => 'required|array',
+            'total_price' => 'required|numeric',
+        ]);
+
+        $order = Order::query()->create([
+            'table_id' => $data['table_id'],
+            'name' => $data['name'],
+            'total_price' => $data['total_price'],
+        ]);
+
+        foreach ($data['items'] as $item) {
+            OrderItem::query()->create([
+                'order_id' => $order->id,
+                'menu_item_id' => $item['id'],
+                'quantity' => $item['quantity'],
+                'price' => $item['price'],
+                'observation' => $item['observation'],
+            ]);
+        }
+
+        // broadcast(new OrderCreated($order))->toOthers();
+
+        return response()->noContent();
+        // return response()->json(['success' => true]);
     }
 
     public function name()

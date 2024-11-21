@@ -9,6 +9,7 @@ Route::get('/home/product/{product}', [SiteController::class, 'product'])->name(
 Route::get('/home/cart', [SiteController::class, 'cart'])->name('site.cart');
 Route::get('/home/name', [SiteController::class, 'name'])->name('site.name');
 Route::get('/home/confirmation', [SiteController::class, 'confirmation'])->name('site.confirmation');
+Route::post('/home/order', [SiteController::class, 'order'])->name('site.order');
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])

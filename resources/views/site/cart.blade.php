@@ -1,7 +1,7 @@
 <x-layouts.site>
     <div x-data="cartPage()">
         <header class="flex items-center justify-between p-4 text-white bg-gray-800 shadow-md">
-            <button onclick="window.location.href = {{ route('site.home') }}"
+            <a href="{{ route('site.home') }}"
                 class="flex items-center space-x-2 text-lg text-white hover:text-gray-300">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor">
@@ -10,7 +10,7 @@
                     </path>
                 </svg>
                 <span>Voltar</span>
-            </button>
+            </a>
             <h1 class="text-lg font-bold">CArrinho</h1>
             <button class="text-sm text-red-500" @click="clear()">LIMPAR</button>
         </header>
@@ -36,7 +36,7 @@
             </template>
 
             <!-- Botão Continuar -->
-            <button @click="proceedToName()"
+            <button @click="postOrder()"
                 class="w-full px-4 py-2 text-lg font-bold text-white bg-green-600 rounded-md hover:bg-green-500">
                 Continuar
             </button>
@@ -44,7 +44,7 @@
 
         <div class="fixed bottom-0 flex items-center justify-between w-full p-4 text-white bg-gray-800 shadow-md">
 
-            <button @click="proceedToName()"
+            <button @click="postOrder()"
                 class="flex px-4 py-2 text-lg font-bold text-center bg-gray-700 rounded-md hover:bg-gray-600">
                 <svg class="w-6 h-6 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
                     height="24" fill="none" viewBox="0 0 24 24">
@@ -66,6 +66,7 @@
             function cartPage() {
                 return {
                     cartItems: JSON.parse(localStorage.getItem('cart')) || [],
+                    userName: localStorage.getItem('userName') || '',
                     decreaseQuantity(item) {
                         if (item.quantity > 1) {
                             item.quantity--;
@@ -87,7 +88,35 @@
                     },
                     clear() {
                         localStorage.removeItem('cart');
-                        cartItems.value = [];
+                        this.cartItems = [];
+                    },
+                    postOrder() {
+                        if(!this.userName) return window.location.href = '/home/name'
+                        if(this.cartItems.length > 0) {
+                            fetch('/home/order', {
+                                method: 'POST',
+                                headers: {
+                                    'Accept': 'application/json',
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': document.head.querySelector('meta[name=csrf-token]').content
+                                },
+                                body: JSON.stringify({
+                                    table_id: '9',
+                                    items: this.cartItems,
+                                    name: this.userName,
+                                    total_price: this.totalPrice
+                                })
+                            }).then(response => {
+                                if (response.ok) {
+                                    console.log('Resposta do servidor:', response);
+                                    this.clear();
+                                    window.location.href = '/home/confirmation';
+                                }
+                                console.error('Erro ao enviar o pedido:', response);
+                            }).catch(error => {
+                                alert('Ocorreu um erro ao enviar o pedido. Por favor, tente novamente.');
+                            })
+                        }
                     }
                 };
             }
