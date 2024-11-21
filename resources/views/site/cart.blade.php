@@ -82,6 +82,9 @@
                     proceedToName() {
                         window.location.href = '/home/name'; // Substitua pelo caminho da tela de nome
                     },
+                    get totalPrice() {
+                        return this.cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+                    },
                     clear() {
                         localStorage.removeItem('cart');
                         cartItems.value = [];

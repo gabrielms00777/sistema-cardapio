@@ -47,6 +47,10 @@
 
     <x-slot name="script">
         <script>
+            const userName = localStorage.getItem('userName')
+            if(userName) {
+                window.location.href = '/home/confirmation'
+            }
             function userNamePage() {
                 return {
                     userName: localStorage.getItem('userName') || '',

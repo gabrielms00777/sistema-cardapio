@@ -48,7 +48,8 @@
 
                 <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                     @foreach ($category->menuItems as $item)
-                        <div @click="location.href = /home/product"
+                        <a 
+                            href="{{ route('site.product', $item->id) }}"
                             class="flex items-center p-4 bg-white rounded-lg shadow-md cursor-pointer">
                             <img src={{ $item->image }} alt={{ $item->name }}
                                 class="object-cover w-24 h-24 mr-4 rounded-md" />
@@ -60,7 +61,7 @@
                                     R$ {{ $item->price * 100 }}
                                 </span>
                             </div>
-                        </div>
+                        </a>
                     @endforeach
                 </div>
             </div>

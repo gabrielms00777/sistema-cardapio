@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\MenuItem;
 
 class SiteController extends Controller
 {
@@ -127,16 +128,16 @@ class SiteController extends Controller
         ]);
     }
 
-    public function product()
+    public function product(MenuItem $product)
     {
-        $product = [
-            'id' => '1',
-            'name' => 'Picanha',
-            'description' => 'Picanha grelhada com farofa e vinagrete',
-            'price' => 59.9,
-            'image' => 'https://via.placeholder.com/300',
-        ];
-
+        // $product = [
+        //     'id' => '1',
+        //     'name' => 'Picanha',
+        //     'description' => 'Picanha grelhada com farofa e vinagrete',
+        //     'price' => 59.9,
+        //     'image' => 'https://via.placeholder.com/300',
+        // ];
+        // dd($product);
         return view('site.product', [
             'product' => $product,
         ]);
