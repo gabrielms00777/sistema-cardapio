@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\OrderCreated;
 use App\Models\Category;
 use App\Models\MenuItem;
 use App\Models\Order;
@@ -180,7 +181,7 @@ class SiteController extends Controller
             ]);
         }
 
-        // broadcast(new OrderCreated($order))->toOthers();
+        broadcast(new OrderCreated($order))->toOthers();
 
         return response()->noContent();
         // return response()->json(['success' => true]);

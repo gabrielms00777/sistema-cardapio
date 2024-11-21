@@ -73,7 +73,6 @@
         </div>
     </div>
 
-    <!-- Script Alpine.js -->
     <script>
         function orderHandler(orderId, items) {
             return {
@@ -82,13 +81,10 @@
                 hidden: false,
 
                 init() {
-                    console.log(this.items);
                     if (this.allItemsReady()) {
-                        // console.log('tem todos prontos');
                         this.updateOrderStatus('ready');
                     }
                 },
-
                 updateItemStatus(itemId, newStatus) {
                     fetch(`/order-items/${itemId}/update-status`, {
                             method: 'PUT',
@@ -106,7 +102,6 @@
                             if (data.success) {
                                 this.status = newStatus;
                                 this.items.find(item => (item.id == itemId)).status = newStatus;
-                                // this.items = this.items.find(item => item.id === itemId).status = newStatus;
                                 this.items;
                                 this.allItemsReady();
                                 if (this.allItemsReady()) {
@@ -117,10 +112,6 @@
                                 alert('Erro ao atualizar status.');
                             }
                         })
-                        .catch(err => {
-                            // console.error('Erro:', err);
-                            // alert('Erro ao conectar ao servidor.');
-                        });
                 },
                 allItemsReady() {
                     return this.items.every(item => item.status === 'ready');
@@ -137,73 +128,9 @@
                         body: JSON.stringify({
                             status: newStatus
                         })
-                        // .then(response => console.log(response))
-                        // .then(data => {
-                        //     if (data.success) {
-                        //         this.hidden = true
-                        //     }
-                        // })
                     })
-
                 }
             }
         }
-
-        function itemStatus(status) {
-            return {
-                status: status,
-                updateStatus(itemId, newStatus) {
-                    fetch(`/order-items/${itemId}/update-status`, {
-                            method: 'POST',
-                            headers: {
-                                'Accept': 'application/json',
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': document.head.querySelector('meta[name=csrf-token]').content
-                            },
-                            body: JSON.stringify({
-                                status: newStatus
-                            })
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                this.status = newStatus;
-                                alert('Status atualizado com sucesso!');
-                            } else {
-                                alert('Erro ao atualizar status.');
-                            }
-                        })
-                        .catch(err => {
-                            console.error('Erro:', err);
-                            alert('Erro ao conectar ao servidor.');
-                        });
-                }
-            }
-        }
-        // function updateStatus(itemId, newStatus) {
-        //     fetch(`/order-items/${itemId}/update-status`, {
-        //             method: 'POST',
-        //             headers: {
-        //                 'Accept': 'application/json',
-        //                 'Content-Type': 'application/json',
-        //                 'X-CSRF-TOKEN': document.head.querySelector('meta[name=csrf-token]').content
-        //             },
-        //             body: JSON.stringify({
-        //                 status: newStatus
-        //             })
-        //         })
-        //         .then(response => response.json())
-        //         .then(data => {
-        //             if (data.success) {
-        //                 alert('Status atualizado com sucesso!');
-        //             } else {
-        //                 alert('Erro ao atualizar status.');
-        //             }
-        //         })
-        //         .catch(err => {
-        //             console.error('Erro:', err);
-        //             alert('Erro ao conectar ao servidor.');
-        //         });
-        // }
     </script>
 </x-layouts.kitchen>
