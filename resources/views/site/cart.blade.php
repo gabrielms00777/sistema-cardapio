@@ -1,8 +1,7 @@
 <x-layouts.site>
     <div x-data="cartPage()">
         <header class="flex items-center justify-between p-4 text-white bg-gray-800 shadow-md">
-            <a href="{{ route('site.home') }}"
-                class="flex items-center space-x-2 text-lg text-white hover:text-gray-300">
+            <a href="{{ route('site.home') }}" class="flex items-center space-x-2 text-lg text-white hover:text-gray-300">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -91,8 +90,15 @@
                         this.cartItems = [];
                     },
                     postOrder() {
-                        if(!this.userName) return window.location.href = '/home/name'
-                        if(this.cartItems.length > 0) {
+                        // if(!this.userName) return window.location.href = '/home/name'
+                        if (!this.userName) {
+                            const user = prompt('Qual o seu nome?');
+                            if (user.trim()) {
+                                this.userName = user;
+                                localStorage.setItem('userName', user);
+                            }
+                        }
+                        if (this.cartItems.length > 0) {
                             fetch('/home/order', {
                                 method: 'POST',
                                 headers: {

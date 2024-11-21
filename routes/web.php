@@ -1,7 +1,10 @@
 <?php
 
 use App\Http\Controllers\SiteController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+
+Auth::loginUsingId(1);
 
 Route::get('/', [SiteController::class, 'index'])->name('site.index');
 Route::get('/home', [SiteController::class, 'home'])->name('site.home');

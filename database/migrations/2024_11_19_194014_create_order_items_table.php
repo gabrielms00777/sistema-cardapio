@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('menu_item_id')->constrained('menu_items');
             $table->unsignedInteger('quantity');
             $table->unsignedInteger('price');
+            $table->enum('status', ['pending', 'preparing', 'ready', 'delivered', 'cancelled'])->default('pending');
             $table->text('observation')->nullable();
             $table->timestamps();
         });

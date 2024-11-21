@@ -21,7 +21,7 @@ class MenuItemFactory extends Factory
             'category_id' => Category::factory(),
             'name' => fake()->name(),
             'description' => fake()->text(),
-            'price' => (fake()->randomNumber(2) * 100),
+            'price' => fake()->randomNumber(2),
             'image' => fake()->imageUrl(),
         ];
     }

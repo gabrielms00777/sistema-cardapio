@@ -158,6 +158,10 @@ class SiteController extends Controller
             'name' => 'required',
             'items' => 'required|array',
             'total_price' => 'required|numeric',
+            // 'items.*.menu_item_id' => 'required|integer|exists:menu_items,id',
+            // 'items.*.quantity' => 'required|integer|min:1',
+            // 'items.*.price' => 'required|numeric',
+            // 'items.*.observation' => 'nullable|string',
         ]);
 
         $order = Order::query()->create([

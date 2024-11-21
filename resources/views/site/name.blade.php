@@ -48,16 +48,17 @@
     <x-slot name="script">
         <script>
             const userName = localStorage.getItem('userName')
-            if(userName) {
+            if (userName) {
                 window.location.href = '/home/confirmation'
             }
+
             function userNamePage() {
                 return {
                     userName: localStorage.getItem('userName') || '',
                     saveNameAndProceed() {
                         if (this.userName.trim()) {
                             localStorage.setItem('userName', this.userName.trim());
-                            window.location.href = '/home/confirmation'; // Substitua pelo caminho da tela de confirmação
+                            window.location.href = '/home/cart'; // Substitua pelo caminho da tela de confirmação
                         } else {
                             alert('Por favor, insira seu nome.');
                         }
