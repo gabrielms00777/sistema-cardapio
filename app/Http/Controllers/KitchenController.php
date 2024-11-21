@@ -9,8 +9,9 @@ use Illuminate\Support\Carbon;
 
 class KitchenController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+
         $orders = Order::query()
             // ->withAggregate('table', 'number', 'table_number')
             ->whereDate('created_at', '=', Carbon::today()->toDateString())
@@ -24,6 +25,12 @@ class KitchenController extends Controller
             // ->with('table')
             ->get();
         // dd($orders);
+
+        if ($request->ajax()) {
+            return response()->json([
+                'orders' => $orders,
+            ]);
+        }
 
         return view('kitchen.index', [
             'orders' => $orders,
