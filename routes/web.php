@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\KitchenController;
 use App\Http\Controllers\SiteController;
+use App\Http\Controllers\TableController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -16,8 +17,11 @@ Route::get('/home/confirmation', [SiteController::class, 'confirmation'])->name(
 Route::post('/home/order', [SiteController::class, 'order'])->name('site.order');
 
 Route::get('/kitchen', [KitchenController::class, 'index'])->name('kitchen.index');
+Route::get('/orders', [KitchenController::class, 'orders'])->name('kitchen.orders');
 Route::put('/order-items/{item}/update-status', [KitchenController::class, 'updateItemStatus']);
 Route::put('/order/{order}/status', [KitchenController::class, 'updateOrderStatus']);
+
+Route::get('/tables/orders', [TableController::class, 'orders'])->name('table.orders');
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])

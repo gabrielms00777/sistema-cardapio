@@ -17,6 +17,7 @@ class Order extends Model
         'name',
         'total_price',
         'status',
+        'session_id',
     ];
 
     public function table(): BelongsTo

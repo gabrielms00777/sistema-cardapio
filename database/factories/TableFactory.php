@@ -18,7 +18,7 @@ class TableFactory extends Factory
     {
         return [
             'number' => fake()->randomDigit(1, 50),
-            'status' => fake()->randomElement(['free', 'occupied']),
+            'status' => 'free',
         ];
     }
 }

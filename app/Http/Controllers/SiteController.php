@@ -7,7 +7,9 @@ use App\Models\Category;
 use App\Models\MenuItem;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Table;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class SiteController extends Controller
 {
@@ -171,6 +173,19 @@ class SiteController extends Controller
             'total_price' => $data['total_price'],
         ]);
 
+        $table = $order->table;
+
+        if ($table->status == 'free') {
+            Table::query()->where('id', $data['table_id'])->update([
+                'status' => 'occupied',
+                'session_id' => Str::ulid(),
+            ]);
+        }
+
+        $order->update([
+            'session_id' => $table->session_id,
+        ]);
+
         foreach ($data['items'] as $item) {
             OrderItem::query()->create([
                 'order_id' => $order->id,
@@ -181,7 +196,7 @@ class SiteController extends Controller
             ]);
         }
 
-        broadcast(new OrderCreated($order))->toOthers();
+        broadcast(new OrderCreated)->toOthers();
 
         return response()->noContent();
         // return response()->json(['success' => true]);

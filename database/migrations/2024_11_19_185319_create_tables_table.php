@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('number');
             $table->enum('status', ['free', 'occupied']);
+            $table->string('session_id')->nullable();
             $table->timestamps();
         });
     }

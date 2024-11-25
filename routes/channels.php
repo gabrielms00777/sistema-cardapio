@@ -6,6 +6,7 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
 
-// Broadcast::channel('orders.{orderId}', function () {
-//     return true;
-// }, ['auth' => true]);
+Broadcast::channel('orders', function ($user) {
+    return true;
+    // return $user->role == 'admin' || $user->role == 'kitchen';
+});

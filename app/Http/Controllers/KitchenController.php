@@ -12,29 +12,44 @@ class KitchenController extends Controller
     public function index(Request $request)
     {
 
+        // $orders = Order::query()
+        //     // ->withAggregate('table', 'number', 'table_number')
+        //     ->whereDate('created_at', '=', Carbon::today()->toDateString())
+        //     // ->where('status', '=', 'pending')
+        //     ->where('status', '<>', 'ready')
+        //     ->with(['items.menuItem', 'table'])
+        //     // ->with('items', function ($query) {
+        //     //     $query->whereNot('status', 'ready');
+        //     // })
+        //     // ->with('items.menuItem')
+        //     // ->with('table')
+        //     ->get();
+        // // dd($orders);
+
+        // if ($request->ajax()) {
+        //     return response()->json([
+        //         'orders' => $orders,
+        //     ]);
+        // }
+
+        return view('kitchen.index', [
+            // 'orders' => $orders,
+        ]);
+    }
+
+    public function orders(Request $request)
+    {
+
         $orders = Order::query()
             // ->withAggregate('table', 'number', 'table_number')
             ->whereDate('created_at', '=', Carbon::today()->toDateString())
-            // ->where('status', '=', 'pending')
             ->where('status', '<>', 'ready')
             ->with(['items.menuItem', 'table'])
-            // ->with('items', function ($query) {
-            //     $query->whereNot('status', 'ready');
-            // })
-            // ->with('items.menuItem')
-            // ->with('table')
             ->get();
         // dd($orders);
 
-        if ($request->ajax()) {
-            return response()->json([
-                'orders' => $orders,
-            ]);
-        }
+        return response()->json($orders);
 
-        return view('kitchen.index', [
-            'orders' => $orders,
-        ]);
     }
 
     public function updateItemStatus(Request $request, OrderItem $item)

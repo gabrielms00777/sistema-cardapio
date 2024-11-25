@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Table extends Model
 {
@@ -13,5 +14,16 @@ class Table extends Model
     protected $fillable = [
         'number',
         'status',
+        // 'session_id'
     ];
+
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    public function activeOrders()
+    {
+        return $this->hasMany(Order::class)->where('session_id', $this->session_id);
+    }
 }

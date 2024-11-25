@@ -2,13 +2,13 @@
 
 namespace App\Events;
 
-use App\Models\Order;
+use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class OrderCreated
+class OrderCreated implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -16,7 +16,6 @@ class OrderCreated
      * Create a new event instance.
      */
     public function __construct(
-        public Order $order
     ) {
         //
     }
@@ -29,7 +28,7 @@ class OrderCreated
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('orders.'.$this->order->id),
+            new Channel('orders'),
         ];
     }
 }

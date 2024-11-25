@@ -16,7 +16,8 @@ return new class extends Migration
             $table->foreignId('table_id')->constrained('tables');
             $table->string('name');
             $table->unsignedInteger('total_price');
-            $table->enum('status', ['pending', 'in_preparation', 'ready', 'delivered'])->default('pending');
+            $table->enum('status', ['pending', 'in_preparation', 'ready', 'delivered', 'paid'])->default('pending');
+            $table->string('session_id')->nullable();
             $table->timestamps();
         });
     }
