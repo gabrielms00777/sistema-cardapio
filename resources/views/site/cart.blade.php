@@ -107,7 +107,7 @@
                                     'X-CSRF-TOKEN': document.head.querySelector('meta[name=csrf-token]').content
                                 },
                                 body: JSON.stringify({
-                                    table_id: 5,
+                                    table_id: 1,
                                     items: this.cartItems,
                                     name: this.userName,
                                     total_price: this.totalPrice

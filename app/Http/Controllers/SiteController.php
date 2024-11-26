@@ -172,19 +172,28 @@ class SiteController extends Controller
             'name' => $data['name'],
             'total_price' => $data['total_price'],
         ]);
-
+        info($order);
+        
         $table = $order->table;
+        info($table);
 
         if ($table->status == 'free') {
-            Table::query()->where('id', $data['table_id'])->update([
+            $table->update([
                 'status' => 'occupied',
                 'session_id' => Str::ulid(),
             ]);
+            // Table::query()->where('id', $data['table_id'])->update([
+            //     'status' => 'occupied',
+            //     'session_id' => Str::ulid(),
+            // ]);
         }
+        info($table);
 
         $order->update([
             'session_id' => $table->session_id,
         ]);
+
+        info($order);
 
         foreach ($data['items'] as $item) {
             OrderItem::query()->create([

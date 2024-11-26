@@ -19,47 +19,53 @@ class ListOrders extends Component
 
     public function selectTable($tableId)
     {
-        $this->selectedTable = $this->tables->find($tableId); // Encontra a mesa selecionada
-        $this->selectedTable->load(['orders', 'orders.items', 'orders.items.menuItem']);
+        $this->selectedTable = $this->tables->find($tableId);
+        $this->selectedTable->load([
+            'orders' => function ($query) {
+                $query->where('session_id', $this->selectedTable->session_id);
+            },
+            'orders.items',
+            'orders.items.menuItem'
+        ]);
     }
 
     public function payPerson($name, $tableId)
     {
         $table = Table::query()->select('id', 'session_id')->find($tableId);
-        $orders = Order::query()
+        Order::query()
             ->where('name', $name)
             ->where('table_id', $table->id)
-            // ->where('session_id', $table->session_id)
-            ->get();
-        dd($table, $orders);
-        // $order = Order::find($orderId);
-        // $order->status = 'paid';
-        // $order->save();
+            ->where('session_id', $table->session_id)
+            ->update(['status' => 'paid']);
 
-        // $this->selectedTable = Table::with('orders')->find($this->selectedTable->id);
+        $this->selectedTable = Table::with([
+            'orders' => function ($query) {
+                $query->where('session_id', $this->selectedTable->session_id);
+            },
+            'orders.items',
+            'orders.items.menuItem'
+        ])->find($tableId);
     }
 
     public function finalizeTable($tableId)
     {
         $table = Table::query()->select('id', 'session_id')->find($tableId);
 
-        $orders = Order::where('table_id', $table->id)
+        Order::where('table_id', $table->id)
             ->where('session_id', $table->session_id)
-            // ->get();
             ->update(['status' => 'paid']);
-
-        // dd($orders);
-
-        $table->update([
-            'status' => 'free',
-            'session_id' => null,
-        ]);
-        // $table = Table::find($tableId);
-        // $table->status = 'free';
-        // $table->save();
-
-        // $this->tables = Table::with('orders')->get();
-        // $this->selectedTable = null;
+            
+            $table->update([
+                'status' => 'free',
+                'session_id' => null,
+            ]);
+            $this->selectedTable = Table::with([
+                'orders' => function ($query) {
+                    $query->where('session_id', $this->selectedTable->session_id);
+                },
+                'orders.items',
+                'orders.items.menuItem'
+            ])->find($tableId);
     }
 
     public function render()

@@ -47,13 +47,19 @@
                         <p class="text-lg font-semibold">{{ $personName }} - R$
                             {{ number_format($totalAmount, 2, ',', '.') }}</p>
                         <p class="text-sm text-gray-600">Itens: {{ implode(', ', $allItems) }}</p>
-
-                        <!-- Botão de Pagar Conta -->
-                        <button wire:click="payPerson('{{ $personName }}', {{ $selectedTable->id }})"
-                            class="px-4 py-2 mt-2 text-white bg-green-500 rounded-md hover:bg-green-600">
-                            Pagar
-                        </button>
+                    
+                        @if ($orders->every(fn($order) => $order->status === 'paid'))
+                            <!-- Status de Pago -->
+                            <span class="text-green-500 font-semibold">Pago</span>
+                        @else
+                            <!-- Botão de Pagar Conta -->
+                            <button wire:click="payPerson('{{ $personName }}', {{ $selectedTable->id }})"
+                                class="px-4 py-2 mt-2 text-white bg-green-500 rounded-md hover:bg-green-600">
+                                Pagar
+                            </button>
+                        @endif
                     </div>
+                    
                 @endforeach
 
 
@@ -62,8 +68,10 @@
                     <div class="flex items-center justify-between mb-4">
                         <span class="text-lg font-semibold">Total da Mesa: </span>
                         <span class="text-xl font-bold text-gray-800">R$
-                            {{ number_format($selectedTable->orders->sum('total_price'), 2, ',', '.') }}</span>
+                            {{ number_format($selectedTable->orders->where('status', '!=', 'paid')->sum('total_price'), 2, ',', '.') }}
+                        </span>
                     </div>
+                    
 
                     <!-- Botão de Finalizar Mesa -->
                     <button wire:click="finalizeTable({{ $selectedTable->id }})"

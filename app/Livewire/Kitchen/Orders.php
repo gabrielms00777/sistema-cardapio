@@ -41,6 +41,7 @@ class Orders extends Component
         // ->withAggregate('table', 'number', 'table_number')
             ->whereDate('created_at', '=', Carbon::today()->toDateString())
             ->where('status', '<>', 'ready')
+            ->where('status', '<>', 'paid')
             ->with(['items.menuItem', 'table'])
             ->get();
     }
