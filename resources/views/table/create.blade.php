@@ -17,27 +17,15 @@
 
                         <!-- Nome da Mesa -->
                         <div class="mb-4">
-                            <label for="name" class="block text-sm font-medium text-gray-700">Nome da Mesa</label>
-                            <input type="text" name="name" id="name" 
+                            <label for="number" class="block text-sm font-medium text-gray-700">Número da Mesa</label>
+                            <input type="text" name="number" id="number" 
                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                    placeholder="Ex.: Mesa 1" required>
-                            @error('name')
+                            @error('number')
                                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 
-                        <!-- Status da Mesa -->
-                        <div class="mb-4">
-                            <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
-                            <select name="status" id="status" 
-                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                                <option value="free">Livre</option>
-                                <option value="occupied">Ocupada</option>
-                            </select>
-                            @error('status')
-                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
 
                         <!-- Botões -->
                         <div class="flex justify-end">

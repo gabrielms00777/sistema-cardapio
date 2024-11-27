@@ -14,8 +14,10 @@ return new class extends Migration
         Schema::create('tables', function (Blueprint $table) {
             $table->id();
             $table->string('number');
-            $table->enum('status', ['free', 'occupied']);
+            $table->enum('status', ['free', 'occupied'])->default('free');
             $table->string('session_id')->nullable();
+            $table->text('qrcode')->nullable();
+            $table->string('token')->nullable();
             $table->timestamps();
         });
     }

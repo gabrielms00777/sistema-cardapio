@@ -11,7 +11,13 @@
         <main
             class="bg-cover flex-1 bg-center bg-[url('https://via.placeholder.com/1920x1080')] flex flex-col justify-center items-center">
             <h1 class="mb-6 text-4xl font-bold text-center">Lanchão do Zé</h1>
+            @if (session()->has('table_id'))
             <a href="{{ route('site.home') }}" class="border btn btn-primary">Ir para o cardapio</a>
+            
+            @else
+            <p>leia o qrcode </p>
+                
+            @endif
         </main>
 
         <div class="flex items-center justify-center py-3 bg-zinc-300">

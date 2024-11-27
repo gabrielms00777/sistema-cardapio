@@ -9,8 +9,8 @@ use Illuminate\Support\Facades\Route;
 Auth::loginUsingId(1);
 
 Route::get('/', [SiteController::class, 'index'])->name('site.index');
+Route::get('/mesa/{token}', [SiteController::class, 'token'])->name('site.token');
 Route::get('/home', [SiteController::class, 'home'])->name('site.home');
-Route::get('/home/products', [SiteController::class, 'products'])->name('site.products');
 Route::get('/home/product/{product}', [SiteController::class, 'product'])->name('site.product');
 Route::get('/home/cart', [SiteController::class, 'cart'])->name('site.cart');
 // Route::get('/home/name', [SiteController::class, 'name'])->name('site.name');
@@ -25,7 +25,7 @@ Route::middleware('auth')->group(function () {
     Route::put('/order/{order}/status', [KitchenController::class, 'updateOrderStatus']);
     
     Route::resource('/table', TableController::class);
-    Route::get('/tables/qrcode', [TableController::class, 'qrcode'])->name('table.qrcode');
+    Route::get('/tables/qrcode/{table_id}', [TableController::class, 'qrcode'])->name('table.qrcode');
     Route::get('/tables/orders', [TableController::class, 'orders'])->name('table.orders');
 
 

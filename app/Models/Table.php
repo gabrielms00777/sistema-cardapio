@@ -14,7 +14,9 @@ class Table extends Model
     protected $fillable = [
         'number',
         'status',
-        'session_id'
+        'session_id',
+        'qrcode',
+        'token',
     ];
 
     public function orders(): HasMany

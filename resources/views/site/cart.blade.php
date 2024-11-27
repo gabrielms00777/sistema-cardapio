@@ -34,11 +34,16 @@
                 </div>
             </template>
 
-            <!-- Botão Continuar -->
+            @if (session()->has('table_id'))
             <button @click="postOrder()"
                 class="w-full px-4 py-2 text-lg font-bold text-white bg-green-600 rounded-md hover:bg-green-500">
                 Continuar
             </button>
+            
+            @else
+            <p>leia o qrcode novamente</p>
+                
+            @endif
         </div>
 
         <div class="fixed bottom-0 flex items-center justify-between w-full p-4 text-white bg-gray-800 shadow-md">
@@ -107,7 +112,7 @@
                                     'X-CSRF-TOKEN': document.head.querySelector('meta[name=csrf-token]').content
                                 },
                                 body: JSON.stringify({
-                                    table_id: 1,
+                                    // table_id: 1,
                                     items: this.cartItems,
                                     name: this.userName,
                                     total_price: this.totalPrice

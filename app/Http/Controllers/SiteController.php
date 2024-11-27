@@ -9,17 +9,37 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Table;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 
 class SiteController extends Controller
 {
     public function index(Request $request)
     {
+        // if(!Session::has('table_id')) {
+        //     return view('site.index');
+        // }
         return view('site.index');
+    }
+
+    public function token(Request $request)
+    {
+        $table = Table::query()->where('token', $request->token)->firstOrFail();
+        // dd($table);
+        session([
+            'table_id' => $table->id,
+            'expires_at' => now()->addMinutes(5),
+        ]);
+
+        return to_route('site.home');
     }
 
     public function home()
     {
+        if(!Session::has('table_id')) {
+            return to_route('site.index');
+        }
+
         $categories = Category::query()->with('menuItems')->select('id', 'name')->get();
 
         return view('site.home', [
@@ -27,25 +47,9 @@ class SiteController extends Controller
         ]);
     }
 
-    public function products()
-    {
-        $categories = Category::query()->with('menuItems')->select('id', 'name')->get();
-
-        return view('site.home', [
-            'categories' => $categories,
-        ]);
-    }
 
     public function product(MenuItem $product)
     {
-        // $product = [
-        //     'id' => '1',
-        //     'name' => 'Picanha',
-        //     'description' => 'Picanha grelhada com farofa e vinagrete',
-        //     'price' => 59.9,
-        //     'image' => 'https://via.placeholder.com/300',
-        // ];
-        // dd($product);
         return view('site.product', [
             'product' => $product,
         ]);
@@ -58,8 +62,11 @@ class SiteController extends Controller
 
     public function order(Request $request)
     {
+        if(!Session::has('table_id')) {
+            return to_route('site.index');
+        }
         $data = $request->validate([
-            'table_id' => 'required',
+            // 'table_id' => 'required',
             'name' => 'required',
             'items' => 'required|array',
             'total_price' => 'required|numeric',
@@ -70,14 +77,15 @@ class SiteController extends Controller
         ]);
 
         $order = Order::query()->create([
-            'table_id' => $data['table_id'],
+            // 'table_id' => $data['table_id'],
+            'table_id' => Session::get('table_id'),
             'name' => $data['name'],
             'total_price' => $data['total_price'],
         ]);
-        info($order);
+        // info($order);
         
         $table = $order->table;
-        info($table);
+        // info($table);
 
         if ($table->status == 'free') {
             $table->update([
@@ -89,13 +97,13 @@ class SiteController extends Controller
             //     'session_id' => Str::ulid(),
             // ]);
         }
-        info($table);
+        // info($table);
 
         $order->update([
             'session_id' => $table->session_id,
         ]);
 
-        info($order);
+        // info($order);
 
         foreach ($data['items'] as $item) {
             OrderItem::query()->create([
