@@ -17,21 +17,19 @@ Route::get('/home/cart', [SiteController::class, 'cart'])->name('site.cart');
 Route::get('/home/confirmation', [SiteController::class, 'confirmation'])->name('site.confirmation');
 Route::post('/home/order', [SiteController::class, 'order'])->name('site.order');
 
-
 Route::middleware('auth')->group(function () {
     Route::get('/kitchen', [KitchenController::class, 'index'])->name('kitchen.index');
     Route::get('/orders', [KitchenController::class, 'orders'])->name('kitchen.orders');
     Route::put('/order-items/{item}/update-status', [KitchenController::class, 'updateItemStatus']);
     Route::put('/order/{order}/status', [KitchenController::class, 'updateOrderStatus']);
-    
+
     Route::resource('/table', TableController::class);
     Route::get('/tables/qrcode/{table_id}', [TableController::class, 'qrcode'])->name('table.qrcode');
     Route::get('/tables/orders', [TableController::class, 'orders'])->name('table.orders');
 
-
     Route::view('dashboard', 'dashboard')->name('dashboard');
+    Route::view('reports', 'reports')->name('reports');
     Route::view('profile', 'profile')->name('profile');
 });
-
 
 require __DIR__.'/auth.php';
